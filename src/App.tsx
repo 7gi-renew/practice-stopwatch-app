@@ -43,12 +43,21 @@ function App() {
   };
 
   useEffect(() => {
-    setPadMinutes(
-      Math.floor(seconds / 60)
-        .toString()
-        .padStart(2, "0"),
-    );
-    setPadSeconds((seconds % 60).toString().padStart(2, "0"));
+    if (seconds <= 0 && timerIdRef.current !== null) {
+      clearInterval(timerIdRef.current);
+      timerIdRef.current = null;
+    }
+
+    const setZeroPadding = async () => {
+      await setPadMinutes(
+        Math.floor(seconds / 60)
+          .toString()
+          .padStart(2, "0"),
+      );
+      await setPadSeconds((seconds % 60).toString().padStart(2, "0"));
+    };
+
+    setZeroPadding();
   }, [seconds]);
 
   return (
