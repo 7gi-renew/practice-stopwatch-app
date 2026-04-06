@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 
 function App() {
   const [seconds, setSeconds] = useState<number>(0);
-  const [padMinutes, setPadMinutes] = useState<string>("00");
-  const [padSeconds, setPadSeconds] = useState<string>("00");
   const timerIdRef = useRef<number | null>(null);
 
   // タイマーを1分追加する
@@ -47,18 +45,13 @@ function App() {
       clearInterval(timerIdRef.current);
       timerIdRef.current = null;
     }
-
-    const setZeroPadding = async () => {
-      await setPadMinutes(
-        Math.floor(seconds / 60)
-          .toString()
-          .padStart(2, "0"),
-      );
-      await setPadSeconds((seconds % 60).toString().padStart(2, "0"));
-    };
-
-    setZeroPadding();
   }, [seconds]);
+
+  const padMinutes = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0");
+
+  const padSeconds = (seconds % 60).toString().padStart(2, "0");
 
   return (
     <>
